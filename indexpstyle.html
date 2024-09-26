@@ -80,6 +80,14 @@
             text-shadow: 0 0 5px rgba(255, 99, 71, 0.7); /* Red Glow */
         }
 
+        .price {
+            margin-top: 10px;
+            color: #FF6347; /* Red */
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px rgba(255, 99, 71, 0.7); /* Red Glow */
+        }
+
         @keyframes textGlow {
             0% { text-shadow: 0 0 5px rgba(255, 99, 71, 0.5); }
             50% { text-shadow: 0 0 15px rgba(255, 99, 71, 1); }
@@ -112,9 +120,15 @@
             name.classList.add('name');
             name.textContent = `Exclusive Pstyle ${i}`;
 
-            // Append image and name to the gallery item
+            // Display price
+            const price = document.createElement('div');
+            price.classList.add('price');
+            price.textContent = 'Price: 800 xats';
+
+            // Append image, name, and price to the gallery item
             imgItem.appendChild(img);
             imgItem.appendChild(name);
+            imgItem.appendChild(price);
             gallery.appendChild(imgItem);
         }
     }
