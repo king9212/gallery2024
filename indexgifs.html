@@ -155,7 +155,7 @@
             // Filtrăm doar fișierele GIF și generăm nume exclusivegif
             return data
                 .filter(item => item.name.endsWith('.gif'))
-                .map((file, index) => `exclusivegif${index + 1}.gif`);  // Numele schimbat în exclusivegif1, exclusivegif2, etc.
+                .map((file, index) => `exclusivgif${index + 1}.gif`);  // Numele schimbat în exclusivegif1, exclusivegif2, etc.
         } catch (error) {
             console.error('Failed to fetch GIFs:', error);
             return [];
