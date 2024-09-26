@@ -35,6 +35,7 @@
     // Kullanım, yalnızca xat.com ile sınırlıdır ve sahibin açık onayını gerektirir.
     // İzinsiz kullanım yasaktır ve yasal işlemlere tabidir. -->
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,9 +137,8 @@
 
 <h1>Galerie GIF-uri</h1>
 
-
-<h2> Exclusive Gifs</h2>
-<div id="af-gallery" class="gallery"></div>
+<h2>Gifuri Exclusive</h2>
+<div id="exclusive-gallery" class="gallery"></div>
 
 <script>
     async function fetchGifs() {
@@ -152,17 +152,17 @@
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
-            // Filtrăm doar fișierele GIF
+            // Filtrăm doar fișierele GIF și generăm nume exclusivegif
             return data
                 .filter(item => item.name.endsWith('.gif'))
-                .map((file, index) => `exclusivgif${index + 1}.gif`);  // Numele schimbat în exclusivgif1, exclusivgif2, etc.
+                .map((file, index) => `exclusivegif${index + 1}.gif`);  // Numele schimbat în exclusivegif1, exclusivegif2, etc.
         } catch (error) {
             console.error('Failed to fetch GIFs:', error);
             return [];
         }
     }
 
-    function createGallery(gifNames, galleryId, price, prefix) {
+    function createGallery(gifNames, galleryId) {
         const gallery = document.getElementById(galleryId);
         gallery.innerHTML = ''; // Golim galeria
 
@@ -178,25 +178,18 @@
             // Afișează numele GIF-ului
             const name = document.createElement('div');
             name.classList.add('name');
-            name.textContent = `GIF ${index + 1}`;
+            name.textContent = `Exclusive GIF ${index + 1}`;
 
-            // Adaugă prețul sub GIF
-            const priceDiv = document.createElement('div');
-            priceDiv.classList.add('price');
-            priceDiv.textContent = `Price: ${price} xats`;
-
-            // Afișăm imaginea, numele și prețul
+            // Afișăm imaginea și numele
             gifItem.appendChild(img);
             gifItem.appendChild(name);
-            gifItem.appendChild(priceDiv);
             gallery.appendChild(gifItem);
         });
     }
 
     async function loadGifs() {
         const gifNames = await fetchGifs();
-        createGallery(gifNames, 'bt-gallery', 300, 'GIF');
-        createGallery(gifNames, 'af-gallery', 500, 'GIF');
+        createGallery(gifNames, 'exclusive-gallery');
     }
 
     loadGifs();
