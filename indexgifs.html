@@ -35,7 +35,6 @@
     // Kullanım, yalnızca xat.com ile sınırlıdır ve sahibin açık onayını gerektirir.
     // İzinsiz kullanım yasaktır ve yasal işlemlere tabidir. -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,9 +179,15 @@
             name.classList.add('name');
             name.textContent = `Exclusive GIF ${index + 1}`;
 
-            // Afișăm imaginea și numele
+            // Afișează prețul GIF-ului
+            const price = document.createElement('div');
+            price.classList.add('price');
+            price.textContent = 'Price: 500 xats';
+
+            // Afișăm imaginea, numele și prețul
             gifItem.appendChild(img);
             gifItem.appendChild(name);
+            gifItem.appendChild(price);
             gallery.appendChild(gifItem);
         });
     }
@@ -197,4 +202,3 @@
 
 </body>
 </html>
-
