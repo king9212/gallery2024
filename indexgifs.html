@@ -35,7 +35,6 @@
     // Kullanım, yalnızca xat.com ile sınırlıdır ve sahibin açık onayını gerektirir.
     // İzinsiz kullanım yasaktır ve yasal işlemlere tabidir. -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,14 +139,14 @@
 <h2>Blufftitler Gifs</h2>
 <div id="bt-gallery" class="gallery"></div>
 
-<h2>After Effects Gifs</h2>
+<h2> Exclusive Gifs</h2>
 <div id="af-gallery" class="gallery"></div>
 
 <script>
     async function fetchGifs() {
         const repoOwner = 'king9212';  // Numele de utilizator GitHub
-        const repoName = 'gallery2024';             // Numele repository-ului
-        const gifFolder = 'gifs';             // Folderul cu GIF-uri din repository
+        const repoName = 'gallery2024'; // Numele repository-ului
+        const gifFolder = 'gifs'; // Folderul cu GIF-uri din repository
         const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${gifFolder}`;
         
         try {
@@ -158,26 +157,11 @@
             // Filtrăm doar fișierele GIF
             return data
                 .filter(item => item.name.endsWith('.gif'))
-                .map(file => file.name);
+                .map((file, index) => `exclusivgif${index + 1}.gif`);  // Numele schimbat în exclusivgif1, exclusivgif2, etc.
         } catch (error) {
             console.error('Failed to fetch GIFs:', error);
             return [];
         }
-    }
-
-    function extractNumber(fileName) {
-        const match = fileName.match(/\d+/);  // Extrage numărul din numele fișierului
-        return match ? parseInt(match[0], 10) : 0;
-    }
-
-    function categorizeAndSortGifs(gifNames) {
-        const btGifs = gifNames
-            .filter(name => name.startsWith('Bt'))
-            .sort((a, b) => extractNumber(b) - extractNumber(a));  // Sortare descrescătoare
-        const afGifs = gifNames
-            .filter(name => name.startsWith('Af'))
-            .sort((a, b) => extractNumber(b) - extractNumber(a));  // Sortare descrescătoare
-        return { btGifs, afGifs };
     }
 
     function createGallery(gifNames, galleryId, price, prefix) {
@@ -196,7 +180,7 @@
             // Afișează numele GIF-ului
             const name = document.createElement('div');
             name.classList.add('name');
-            name.textContent = `${prefix} (${extractNumber(gifName)})`;  // Folosim numărul corect
+            name.textContent = `GIF ${index + 1}`;
 
             // Adaugă prețul sub GIF
             const priceDiv = document.createElement('div');
@@ -213,10 +197,8 @@
 
     async function loadGifs() {
         const gifNames = await fetchGifs();
-        const { btGifs, afGifs } = categorizeAndSortGifs(gifNames);
-
-        createGallery(btGifs, 'bt-gallery', 300, 'Bt');
-        createGallery(afGifs, 'af-gallery', 500, 'Af');
+        createGallery(gifNames, 'bt-gallery', 300, 'GIF');
+        createGallery(gifNames, 'af-gallery', 500, 'GIF');
     }
 
     loadGifs();
