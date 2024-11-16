@@ -29,13 +29,6 @@
             animation: textGlow 1.5s ease-in-out infinite;
         }
 
-        h2 {
-            color: #FF6347; /* Red */
-            font-size: 2em;
-            text-align: center;
-            margin-top: 40px;
-        }
-
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -103,11 +96,10 @@
 <script>
     function loadImages() {
         const imageNames = [
-            'exclusivpcback1.png',
-            'exclusivpcback2.png',
-            'exclusivpcback3.png',
-            'exclusivpcback4.png',
-            'exclusivpcback5.png'
+            'pcback1.png',
+            'pcback2.png',
+            'pcbackgif1.gif',
+            'pcbackgif2.gif'
         ];
 
         const gallery = document.getElementById('pcback-gallery');
@@ -119,24 +111,36 @@
 
             // Creăm elementul img
             const img = document.createElement('img');
-            img.src = `PcBack/${imageName}`;
+            img.src = `https://raw.githubusercontent.com/king9212/gallery2024/main/PcBack/${imageName}`;
             img.alt = imageName;
 
-            // Afișăm numele imaginii
-            const name = document.createElement('div');
-            name.classList.add('name');
-            name.textContent = `exclusivpcback ${index + 1}`;
+            // Verificăm dacă fișierul există
+            img.onload = function() {
+                // Afișăm numele imaginii
+                const name = document.createElement('div');
+                name.classList.add('name');
+                name.textContent = `Exclusiv ${imageName.replace(/\.(png|gif)$/, '')}`;
 
-            // Afișăm prețul imaginii
-            const price = document.createElement('div');
-            price.classList.add('price');
-            price.textContent = 'Price: 600 xats';
+                // Determinăm prețul în funcție de tipul fișierului
+                const price = document.createElement('div');
+                price.classList.add('price');
+                if (imageName.endsWith('.png')) {
+                    price.textContent = 'Price: 600 xats'; // Preț pentru fișiere .png
+                } else if (imageName.endsWith('.gif')) {
+                    price.textContent = 'Price: 1500 xats'; // Preț pentru fișiere .gif
+                }
 
-            // Adăugăm imaginea, numele și prețul la galerie
-            imgItem.appendChild(img);
-            imgItem.appendChild(name);
-            imgItem.appendChild(price);
-            gallery.appendChild(imgItem);
+                // Adăugăm imaginea, numele și prețul la galerie
+                imgItem.appendChild(img);
+                imgItem.appendChild(name);
+                imgItem.appendChild(price);
+                gallery.appendChild(imgItem);
+            };
+
+            img.onerror = function() {
+                // Dacă fișierul nu există, afișăm un mesaj în consolă
+                console.log(`File not found: ${imageName}`);
+            };
         });
     }
 
