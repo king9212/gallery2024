@@ -96,8 +96,11 @@
 <script>
     function loadImages() {
         const imageNames = [
-            'pcback1.png',
-            'pcback2.png',
+            'exclusivpcback1.png',
+            'exclusivpcback2.png',
+            'exclusivpcback3.png',
+            'exclusivpcback4.png',
+            'exclusivpcback5.png',
             'pcbackgif1.gif',
             'pcbackgif2.gif'
         ];
@@ -119,7 +122,7 @@
                 // Afișăm numele imaginii
                 const name = document.createElement('div');
                 name.classList.add('name');
-                name.textContent = `Exclusiv ${imageName.replace(/\.(png|gif)$/, '')}`;
+                name.textContent = imageName.replace(/\.(png|gif)$/, '').replace('exclusiv', '');
 
                 // Determinăm prețul în funcție de tipul fișierului
                 const price = document.createElement('div');
