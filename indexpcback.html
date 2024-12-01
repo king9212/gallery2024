@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galerie Imagini PcBack</title>
     <style>
+        /* Stilurile existente */
         body {
             font-family: 'Arial', sans-serif;
             background: url('https://xatimg.com/image/5p0P2zxVZMkt.png') no-repeat center center fixed;
@@ -94,60 +95,50 @@
 <div id="pcback-gallery" class="gallery"></div>
 
 <script>
-    function loadImages() {
-        const imageNames = [
-            'exclusivpcback1.png',
-            'exclusivpcback2.png',
-            'exclusivpcback3.png',
-            'exclusivpcback4.png',
-            'exclusivpcback5.png',
-            'pcbackgif1.gif',
-            'pcbackgif2.gif',
-            'pcbackgif3.gif',
-            'pcbackgif4.gif',
-            'pcbackgif5.gif',
-        ];
+    async function loadImages() {
+        const folderUrl = 'https://api.github.com/repos/king9212/gallery2024/contents/PcBack';
+        
+        try {
+            const response = await fetch(folderUrl);
+            const files = await response.json();
 
-        const gallery = document.getElementById('pcback-gallery');
-        gallery.innerHTML = ''; // Golim galeria
+            const gallery = document.getElementById('pcback-gallery');
+            gallery.innerHTML = ''; // Golim galeria
 
-        imageNames.forEach((imageName, index) => {
-            const imgItem = document.createElement('div');
-            imgItem.classList.add('gallery-item');
+            files.forEach(file => {
+                if (file.name.endsWith('.png') || file.name.endsWith('.gif')) {
+                    const imgItem = document.createElement('div');
+                    imgItem.classList.add('gallery-item');
 
-            // Creăm elementul img
-            const img = document.createElement('img');
-            img.src = `https://raw.githubusercontent.com/king9212/gallery2024/main/PcBack/${imageName}`;
-            img.alt = imageName;
+                    // Creăm elementul img
+                    const img = document.createElement('img');
+                    img.src = file.download_url;
+                    img.alt = file.name;
 
-            // Verificăm dacă fișierul există
-            img.onload = function() {
-                // Afișăm numele imaginii
-                const name = document.createElement('div');
-                name.classList.add('name');
-                name.textContent = imageName.replace(/\.(png|gif)$/, '').replace('exclusiv', '');
+                    // Afișăm numele imaginii
+                    const name = document.createElement('div');
+                    name.classList.add('name');
+                    name.textContent = file.name.replace(/\.(png|gif)$/, '').replace('exclusiv', '');
 
-                // Determinăm prețul în funcție de tipul fișierului
-                const price = document.createElement('div');
-                price.classList.add('price');
-                if (imageName.endsWith('.png')) {
-                    price.textContent = 'Price: 600 xats'; // Preț pentru fișiere .png
-                } else if (imageName.endsWith('.gif')) {
-                    price.textContent = 'Price: 1500 xats'; // Preț pentru fișiere .gif
+                    // Determinăm prețul în funcție de tipul fișierului
+                    const price = document.createElement('div');
+                    price.classList.add('price');
+                    if (file.name.endsWith('.png')) {
+                        price.textContent = 'Price: 600 xats'; // Preț pentru fișiere .png
+                    } else if (file.name.endsWith('.gif')) {
+                        price.textContent = 'Price: 1500 xats'; // Preț pentru fișiere .gif
+                    }
+
+                    // Adăugăm imaginea, numele și prețul la galerie
+                    imgItem.appendChild(img);
+                    imgItem.appendChild(name);
+                    imgItem.appendChild(price);
+                    gallery.appendChild(imgItem);
                 }
-
-                // Adăugăm imaginea, numele și prețul la galerie
-                imgItem.appendChild(img);
-                imgItem.appendChild(name);
-                imgItem.appendChild(price);
-                gallery.appendChild(imgItem);
-            };
-
-            img.onerror = function() {
-                // Dacă fișierul nu există, afișăm un mesaj în consolă
-                console.log(`File not found: ${imageName}`);
-            };
-        });
+            });
+        } catch (error) {
+            console.error('Eroare la încărcarea imaginilor:', error);
+        }
     }
 
     loadImages();
