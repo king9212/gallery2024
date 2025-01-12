@@ -164,18 +164,10 @@
         nameDiv.classList.add('name');
         nameDiv.textContent = `Pachet ${packageNumber}`;
 
-        // Prețuri diferite pentru fiecare pachet
-        const prices = {
-            "1": "Preț: 2000 xats",
-            "2": "Preț: 2000 xats",
-            "3": "Preț: 2000 xats",
-            "4": "Preț: 2000 xats",
-            "5": "Preț: 2000 xats",
-        };
-
+        // Preț pentru toate pachetele de 2000 xats
         const priceDiv = document.createElement('div');
         priceDiv.classList.add('price');
-        priceDiv.textContent = prices[packageNumber] || 'Preț: 1000 xats'; // Dacă nu există preț, setăm un preț implicit
+        priceDiv.textContent = `Preț: 2000 xats`;
 
         packageDiv.appendChild(imagesDiv);
         packageDiv.appendChild(pcBackDiv);
