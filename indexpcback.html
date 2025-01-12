@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galerie Imagini PcBack</title>
 
-
-<style>
+    <style>
         /* Stilurile existente */
         body {
             font-family: 'Arial', sans-serif;
@@ -90,8 +89,6 @@
             100% { text-shadow: 0 0 5px rgba(30, 144, 255, 0.5); }
         }
     </style>
-
-    
 </head>
 <body>
 
@@ -101,7 +98,7 @@
 <script>
     async function loadImages() {
         const folderUrl = 'https://api.github.com/repos/king9212/gallery2024/contents/PcBack';
-        
+
         try {
             const response = await fetch(folderUrl);
             const files = await response.json();
@@ -109,36 +106,44 @@
             const gallery = document.getElementById('pcback-gallery');
             gallery.innerHTML = ''; // Golim galeria
 
-            files.forEach(file => {
-                if (file.name.endsWith('.png') || file.name.endsWith('.gif')) {
-                    const imgItem = document.createElement('div');
-                    imgItem.classList.add('gallery-item');
+            // Filtrăm și sortăm fișierele
+            const sortedFiles = files
+                .filter(file => file.name.endsWith('.png') || file.name.endsWith('.gif'))
+                .sort((a, b) => {
+                    // Extragem numerele din numele fișierelor
+                    const numA = parseInt(a.name.match(/(\d+)(?=\.\w+$)/)?.[0]) || 0;
+                    const numB = parseInt(b.name.match(/(\d+)(?=\.\w+$)/)?.[0]) || 0;
+                    return numA - numB; // Sortare crescătoare
+                });
 
-                    // Creăm elementul img
-                    const img = document.createElement('img');
-                    img.src = file.download_url;
-                    img.alt = file.name;
+            sortedFiles.forEach(file => {
+                const imgItem = document.createElement('div');
+                imgItem.classList.add('gallery-item');
 
-                    // Afișăm numele imaginii
-                    const name = document.createElement('div');
-                    name.classList.add('name');
-                    name.textContent = file.name.replace(/\.(png|gif)$/, '').replace('exclusiv', '');
+                // Creăm elementul img
+                const img = document.createElement('img');
+                img.src = file.download_url;
+                img.alt = file.name;
 
-                    // Determinăm prețul în funcție de tipul fișierului
-                    const price = document.createElement('div');
-                    price.classList.add('price');
-                    if (file.name.endsWith('.png')) {
-                        price.textContent = 'Price: 600 xats'; // Preț pentru fișiere .png
-                    } else if (file.name.endsWith('.gif')) {
-                        price.textContent = 'Price: 700 xats'; // Preț pentru fișiere .gif
-                    }
+                // Afișăm numele imaginii
+                const name = document.createElement('div');
+                name.classList.add('name');
+                name.textContent = file.name.replace(/\.(png|gif)$/, '').replace('exclusiv', '');
 
-                    // Adăugăm imaginea, numele și prețul la galerie
-                    imgItem.appendChild(img);
-                    imgItem.appendChild(name);
-                    imgItem.appendChild(price);
-                    gallery.appendChild(imgItem);
+                // Determinăm prețul în funcție de tipul fișierului
+                const price = document.createElement('div');
+                price.classList.add('price');
+                if (file.name.endsWith('.png')) {
+                    price.textContent = 'Price: 600 xats'; // Preț pentru fișiere .png
+                } else if (file.name.endsWith('.gif')) {
+                    price.textContent = 'Price: 700 xats'; // Preț pentru fișiere .gif
                 }
+
+                // Adăugăm imaginea, numele și prețul la galerie
+                imgItem.appendChild(img);
+                imgItem.appendChild(name);
+                imgItem.appendChild(price);
+                gallery.appendChild(imgItem);
             });
         } catch (error) {
             console.error('Eroare la încărcarea imaginilor:', error);
